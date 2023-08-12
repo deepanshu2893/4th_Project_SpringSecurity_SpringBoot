@@ -8,6 +8,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
@@ -23,13 +24,18 @@ import javax.sql.DataSource;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-//@Configuration
+@Configuration
+@EnableMethodSecurity
 public class BasicAuthSecurityConfiguration {
 
     @Bean
     SecurityFilterChain SecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> {
-                    auth.anyRequest().authenticated();
+
+                    auth
+                            .requestMatchers("/users").hasRole("USER")
+                            .requestMatchers("/admin/**").hasRole("ADMIN")
+                            .anyRequest().authenticated();
                 }
         );
         http.sessionManagement(
