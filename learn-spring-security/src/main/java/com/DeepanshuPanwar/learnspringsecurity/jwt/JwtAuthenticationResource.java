@@ -6,7 +6,6 @@ import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
 import java.util.stream.Collectors;
@@ -21,12 +20,12 @@ public class JwtAuthenticationResource {
     }
 
     @PostMapping("/authenticate")
-    public JwtResponse authenticate(Authentication authentication){
+    public JwtResponse authenticate(Authentication authentication) {
 
 
         return new JwtResponse(createToken(authentication));
-        
-        
+
+
     }
 
     private String createToken(Authentication authentication) {
@@ -44,8 +43,8 @@ public class JwtAuthenticationResource {
     private String createScope(Authentication authentication) {
         return authentication.getAuthorities().stream()
                 .map(a -> a.getAuthority())
-                .collect(Collectors.joining(""));
+                .collect(Collectors.joining(" "));
     }
 }
-
+//
 record JwtResponse (String token){}

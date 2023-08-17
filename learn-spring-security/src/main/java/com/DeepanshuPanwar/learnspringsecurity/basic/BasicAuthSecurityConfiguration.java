@@ -25,7 +25,7 @@ import javax.sql.DataSource;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-@EnableMethodSecurity
+@EnableMethodSecurity (jsr250Enabled = true, securedEnabled = true)
 public class BasicAuthSecurityConfiguration {
 
     @Bean
@@ -33,8 +33,7 @@ public class BasicAuthSecurityConfiguration {
         http.authorizeHttpRequests(auth -> {
 
                     auth
-                            .requestMatchers("/users").hasRole("USER")
-                            .requestMatchers("/admin/**").hasRole("ADMIN")
+
                             .anyRequest().authenticated();
                 }
         );
@@ -50,7 +49,6 @@ public class BasicAuthSecurityConfiguration {
 
         return http.build();
     }
-
 
 //    @Bean
 //    public UserDetailsService userDetailsService () {
